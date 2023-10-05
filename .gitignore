@@ -1,3 +1,4 @@
 venv
 *.json
 !spec/*.json
+__pycache__
