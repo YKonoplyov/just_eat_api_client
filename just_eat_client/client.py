@@ -36,7 +36,7 @@ class JustEatClient:
 
         except requests.exceptions.HTTPError as e:
             print("HTTP Error:", e)
-        print(restaurants_data)
+
         return restaurants_data.get("Restaurants")
 
     def _parse_restaraunts(self, restaurant: dict) -> dict:
