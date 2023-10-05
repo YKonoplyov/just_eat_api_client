@@ -38,3 +38,24 @@ class JustEatClient:
             print("HTTP Error:", e)
         print(restaurants_data)
         return restaurants_data.get("Restaurants")
+
+    def from_postal_code(
+            self,
+            postalcode: str,
+            write: bool = False
+    ) -> list[dict]:
+        """
+        Retrieves a list of restaurants based on a postal code
+
+        Args:
+            postalcode (str): The postal code to search for restaurants.
+
+        Returns:
+            list[dict]: A list of dictionaries containing restaurant
+            information.
+        """
+
+        restaurants_data = self._get_restaurants_by_postal_code(postalcode)
+        if not restaurants_data:
+            print("There is no food delivery services in your area")
+            return
