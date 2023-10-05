@@ -30,7 +30,7 @@ class JustEatClient:
         try:
             response = requests.get(url, headers=headers)
             restaurants_data = response.json()
-        
+
         except requests.exceptions.RequestException as e:
             print("Network Error:", e)
 
@@ -39,16 +39,36 @@ class JustEatClient:
         print(restaurants_data)
         return restaurants_data.get("Restaurants")
 
+    def _parse_restaraunts(self, restaurant: dict) -> dict:
+        """
+        Parses a restaurant dictionary and extracts relevant information.
+
+        Args:
+            restaurant (dict): A dictionary representing a restaurant.
+
+        Returns:
+            dict: A dictionary with restaurant information.
+        """
+        return dict(
+            name=restaurant.get("Name"),
+            rating=restaurant.get("RatingAverage"),
+            cuisines=[
+                cuisine.get("Name") for cuisine in restaurant.get("Cuisines")
+            ]
+        )
+
     def from_postal_code(
             self,
             postalcode: str,
             write: bool = False
     ) -> list[dict]:
         """
-        Retrieves a list of restaurants based on a postal code
+        Retrieves a list of restaurants based on a postal code and optionally
+        writes the data to a JSON file.
 
         Args:
             postalcode (str): The postal code to search for restaurants.
+            write (bool, optional): Whether to write the data to a JSON file.
 
         Returns:
             list[dict]: A list of dictionaries containing restaurant
@@ -59,3 +79,10 @@ class JustEatClient:
         if not restaurants_data:
             print("There is no food delivery services in your area")
             return
+
+        restaurants = [
+            self._parse_restaraunts(restaurant) for restaurant in
+            restaurants_data
+        ]
+
+        return restaurants
