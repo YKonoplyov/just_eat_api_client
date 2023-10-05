@@ -85,4 +85,23 @@ class JustEatClient:
             restaurants_data
         ]
 
+        if write:
+            self._write_to_file(restaurants, postalcode)
+
         return restaurants
+
+    def _write_to_file(self, restaurants: list[dict], postalcode: str) -> None:
+        """
+        Writes restaurant data to a JSON file.
+
+        Args:
+            restaurants (list[dict]): A list of dictionaries containing
+                restaurant information.
+            postalcode (str): The postal code used to construct the file name.
+        """
+        filename = postalcode + "_restaurants.json"
+
+        with open(filename, "w", encoding="utf-8") as restaurants_file:
+            restaurants_file.write(
+                json.dumps({"Restaurants": restaurants}, indent=4)
+            )
