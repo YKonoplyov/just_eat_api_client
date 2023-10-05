@@ -1,4 +1,19 @@
 from just_eat_client import create_client
+import re
+
+
+def validate_postalcode(postalcode: str) -> bool:
+    """
+    Validates postalcode
+    """
+    ex = r"^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$"
+
+    if len(postalcode) < 4:
+        ex = r"^\w{1,2}\d{1,2}"
+
+    if not re.match(ex, postalcode):
+        return False
+    return True
 
 
 def main() -> None:
@@ -12,8 +27,12 @@ def main() -> None:
         "y": True,
         "n": False,
     }
-    
-    postalcode = input("Enter postal code: ")
+    while True: 
+        postalcode = input("Enter postal code: ")
+        if validate_postalcode(postalcode=postalcode):
+            break
+        print("Please enter valid postal code")
+
     while True:
         need_write = input(
             "Write restaurants data to .json file? (y/N): "
